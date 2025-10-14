@@ -1,36 +1,75 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+"""# 🚀 TechNova - Product Catalog Management System
 
-## Getting Started
+## 📋 General Overview
+TechNova is an internal web system developed with **Next.js (React/TypeScript)** for optimized product catalog management and access control.  
+The goal is to eliminate data duplication (**unique SKU**) and centralize management through **role-based authentication**.
 
-First, run the development server:
+---
 
-```bash
+## 💻 Prerequisites
+For local execution, the following are required:
+
+- **Node.js**: Version 18.x or higher  
+- **npm** or **Yarn**: Package manager  
+- **MongoDB**: Running server instance  
+- **.env.local**: Configured with the `MONGODB_URI` variable  
+
+---
+
+## ⚙️ Setup and Execution Steps
+
+1. **Clone repository**  
+   ```bash
+   git clone [YOUR_REPO_URL]
+   cd technova-catalog
+Install dependencies
+
+bash
+Mostrar siempre los detalles
+
+Copiar código
+npm install
+# or
+yarn install
+Run development server
+
+bash
+Mostrar siempre los detalles
+
+Copiar código
 npm run dev
 # or
 yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+The application will be available at: http://localhost:3000
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+✨ Implemented Key Features
+Authentication (Local): Functional login and basic session persistence.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Roles (RBAC): Conditional access control (isAdmin in AuthContext) is implemented to display management buttons only to the administrator.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+CRUD (Skeleton): The Dashboard UI lists products and has the structural components (Cards, Buttons) for CRUD operations (Create, List, Edit, Delete).
 
-## Learn More
+Strict Typing: Use of TypeScript interfaces (Product.ts, User.ts) throughout the project.
 
-To learn more about Next.js, take a look at the following resources:
+Backend API (Next.js): API routes for CRUD operations are configured at /api/products and /api/products/[id], including SKU uniqueness validation with Mongoose.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+🖼️ Main Flow (To be documented with Screenshots/GIFs)
+Login: Access with default credentials.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Admin: admin / 123 → Sees list and action buttons.
 
-## Deploy on Vercel
+User: user / 123 → Only sees the list and “Sign Out” button.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Dashboard: Displays the product list and the edit/delete actions available according to the role.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+🔑 Test Credentials
+Username	Password	Role
+admin	123	Administrator
+user	123	Standard
+
+👤 Coder Information (Deliverable 5)
+Coder Name: Menelik Puerta Herrera
+Clan: Gosling
+Email: menelikdev@gmail.com
+ID Document: CC 1001459190
+"""
