@@ -22,7 +22,7 @@ For local execution, the following are required:
 1.  **Clone repository**
     ```bash
     git clone [REPO_URL]
-    cd technova-catalog
+    cd Simulacro_TechNova-
     ```
 
 2.  **Install dependencies**
