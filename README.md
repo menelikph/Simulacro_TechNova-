@@ -21,7 +21,7 @@ For local execution, the following are required:
 
 1.  **Clone repository**
     ```bash
-    git clone [REPLACE_WITH_YOUR_REPO_URL]
+    git clone [REPO_URL]
     cd technova-catalog
     ```
 
@@ -52,7 +52,7 @@ For local execution, the following are required:
 
 ---
 
-## 🖼️ Main Flow (To be documented with Screenshots/GIFs)
+## 🖼️ Main Flow
 
 1.  **Login:** Access with default credentials.
     * **Admin:** `admin` / `123` → Sees list and all action buttons.
