@@ -1,24 +1,34 @@
-// src/models/Product.ts
-import mongoose, { Schema, Document, Model, Types } from 'mongoose';
-import { Product as ProductInterface } from '../types/Product'; // Import the TypeScript interface
+import mongoose, { Schema, Document, Model } from "mongoose";
 
-// Extend the interface with Mongoose's Document type
-export interface ProductDocument extends ProductInterface, Document {}
+// 1. Interface (para tipar los datos del producto)
+export interface IProduct extends Document {
+  sku: string;
+  name: string;
+  brand: string;
+  quantity: number;
+  price: number;
+  isActive: boolean;
+  category: string;
+  imageUrl: string;
+  createdAt: Date;
+} 
 
+
+// 2. Esquema de Mongoose
 const ProductSchema: Schema = new Schema({
-  sku: { type: String, required: true, unique: true }, // SKU must be unique 
+  sku: { type: String, required: true, unique: true },
   name: { type: String, required: true },
   brand: { type: String, required: true },
-  quantity: { type: Number, required: true, min: 0 }, // Minimal validation (non-negative)
-  price: { type: Number, required: true, min: 0.01 },
+  quantity: { type: Number, required: true },
+  price: { type: Number, required: true },
   isActive: { type: Boolean, default: true },
   category: { type: String, required: true },
-  imageUrl: { type: String, required: true },
+  imageUrl: { type: String, required: false },
   createdAt: { type: Date, default: Date.now },
-  _id: { type: Types.ObjectId, auto: true }, // Explicitly define the Mongoose ID type (solves 'unknown' issue)
 });
 
-// Use Model<ProductDocument> to explicitly tell TypeScript the type of the exported Model
-const ProductModel = (mongoose.models.Product || mongoose.model<ProductDocument>('Product', ProductSchema)) as Model<ProductDocument>; // model is already compiled
+// 3. Modelo exportado (evita volver a crearlo si ya existe)
+const Product: Model<IProduct> =
+  mongoose.models.Product || mongoose.model<IProduct>("Product", ProductSchema);
 
-export default ProductModel; 
+export default Product;

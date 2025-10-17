@@ -1,47 +1,30 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
-const MONGODB_URI = process.env.MONGODB_URI;
+const MONGODB_URI = process.env.MONGODB_URI || "";
 
 if (!MONGODB_URI) {
-  // Check if the environment variable is defined
-  throw new Error(
-    'Please define the MONGO_URI environment variable inside .env.local'
-  );
+  throw new Error("Missing MONGODB_URI environment variable");
 }
 
-// Use a global object to cache the connection across Next.js reloads
-const cached = global as typeof global & { mongoose: { conn: any | null, promise: any | null } }; //conn is connection, promise is the connection promise
+let isConnected = false; 
 
-if (!cached.mongoose) {
-  cached.mongoose = { conn: null, promise: null };
-}
-
-/**
- * Establishes connection to MongoDB or reuses cached connection.
- */
-async function dbConnect() {
-  // 1. Return cached connection if available
-  if (cached.mongoose.conn) {
-    console.log('DB already connected (cached)');
-    return cached.mongoose.conn;
+const dbConnection = async (): Promise<void> => { 
+  if (isConnected) {
+    console.log("Already connected to MongoDB");
+    return;
   }
 
-  // 2. If no promise is running, start a new connection
-  if (!cached.mongoose.promise) {
-    const opts = {
-      bufferCommands: false, // Recommended setting for Next.js
-    };
+  try {
+    const db = await mongoose.connect(MONGODB_URI);
 
-    cached.mongoose.promise = mongoose.connect(MONGODB_URI!, opts).then((mongooseInstance) => {
-      console.log('DB Online (new connection)');
-      return mongooseInstance;
-    });
+    isConnected = !!db.connections[0].readyState; 
+
+    console.log("Database connected successfully");
+    
+  } catch (error) {
+    console.error("Error connecting to MongoDB:", error);
+    throw new Error("Database connection error");
   }
+};
 
-  // 3. Wait for the promise to resolve and cache the connection
-  cached.mongoose.conn = await cached.mongoose.promise;
-  return cached.mongoose.conn;
-}
-
-export default dbConnect;
+export default dbConnection;

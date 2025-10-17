@@ -1,6 +1,6 @@
 // src/context/AuthContext.tsx
 "use client"
-import { userStore } from "@/services/UserStore";
+import { userStore } from "@/helpers/UserStore";
 import { AuthUser, User } from "@/types/User";
 import { useContext, useEffect, useState } from "react";
 import { createContext } from "react";

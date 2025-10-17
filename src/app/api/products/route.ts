@@ -1,58 +1,32 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-// src/app/api/products/route.ts
-import { NextRequest, NextResponse } from 'next/server'; // USE THESE TYPES
-import dbConnect from '@/lib/dbConnect';
-import ProductModel from '@/models/Product';
-import { Product } from '@/types/Product';
+import { NextResponse } from "next/server";
+import dbConnect from "@/lib/dbConnect";
+import Product from "@/models/Product";
 
-// DB connection outside of handlers
-await dbConnect();
-
-// ===================================
-// 1. GET: List products and allow filtering
-// ===================================
-export async function GET(request: NextRequest) {
-    try {
-        const { searchParams } = new URL(request.url); // get search params
-        const category = searchParams.get('category');
-        const brand = searchParams.get('brand');
-
-        const filter: any = {};
-        if (category) filter.category = category;
-        if (brand) filter.brand = brand;
-        
-        const products = await ProductModel.find(filter).sort({ createdAt: -1 });
-
-        return NextResponse.json({ success: true, data: products }, { status: 200 });
-    } catch (error) {
-        // Error handling
-        console.error('Error fetching products:', error);
-        return NextResponse.json({ success: false, error: 'Error fetching products' }, { status: 400 });
-    }
+// GET - get all products
+export async function GET() {
+  try {
+    await dbConnect();
+    const products = await Product.find(); // obtiene todos los productos
+    return NextResponse.json(products);
+  } catch (error) {
+    console.error("Error al obtener productos:", error);
+    return NextResponse.json({ message: "Error al obtener productos" }, { status: 500 });
+  }
 }
 
-// ===================================
-// 2. POST: Create a new product
-// ===================================
-export async function POST(request: NextRequest) {
-    try {
-        const productData: Product = await request.json(); // Get the body as JSON
+// POST - Crear un nuevo producto
+export async function POST(request: Request) {
+  try {
+    await dbConnect();
 
-        // 1. SKU Uniqueness Validation (Requirement 3.1, 3.6)
-        const existingProduct = await ProductModel.findOne({ sku: productData.sku });
-        if (existingProduct) {
-          return NextResponse.json({ success: false, error: 'SKU must be unique to prevent duplication.' }, { status: 400 });
-        }
+    const body = await request.json(); // obtiene los datos enviados
 
-        // 2. Create product
-        const product = await ProductModel.create(productData);
+    // Crea un nuevo producto con los datos del cuerpo
+    const newProduct = await Product.create(body);
 
-        return NextResponse.json({ success: true, data: product }, { status: 201 });
-    } catch (error) {
-        // General error handling
-        return NextResponse.json(
-            { success: false, error: (error as Error).message || 'Failed to create product due to invalid data.' }, 
-            { status: 400 }
-        );
-    }
+    return NextResponse.json(newProduct, { status: 201 });
+  } catch (error) {
+    console.error("Error al crear producto:", error);
+    return NextResponse.json({ message: "Error al crear producto" }, { status: 500 });
+  }
 }
