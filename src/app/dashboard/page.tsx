@@ -11,18 +11,19 @@ export default function DashboardPage() {
   const [selectedProduct, setSelectedProduct] = useState<any | null>(null);
 
 
-  // 🟢 Cargar los productos
+  // Fetches products from the API and updates the state.
   const fetchProducts = async () => {
     const data = await getProducts();
     setProducts(data);
   };
 
+  // Fetch products when the component mounts.
   useEffect(() => {
     fetchProducts();
   }, []);
   
 
-  // 🟡 Crear o editar producto
+  // Handles both creating a new product and updating an existing one.
   const handleSubmit = async (e: any) => {
     e.preventDefault();
 
@@ -38,18 +39,20 @@ export default function DashboardPage() {
       isActive: true,
     };
 
+    // If a product is selected, update it. Otherwise, create a new one.
     if (selectedProduct) {
       await updateProduct(selectedProduct._id, productData);
     } else {
       await createProduct(productData);
     }
 
+    // Refresh the product list, close the modal, and reset the selected product.
     await fetchProducts();
     setIsModalOpen(false);
     setSelectedProduct(null);
   };
 
-  // 🔴 Eliminar producto
+  // Handles deleting a product after confirmation.
   const handleDelete = async (id: string) => {
     if (confirm("Are you sure you want to delete this product?")) {
       await deleteProduct(id);
@@ -59,6 +62,7 @@ export default function DashboardPage() {
 
   return (
     <main className="p-8 bg-gray-100 min-h-screen">
+      {/* Page Header */}
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-semibold text-gray-800">🛍️ Products</h1>
         <button
@@ -72,7 +76,7 @@ export default function DashboardPage() {
         </button>
       </div>
 
-     {/* 🧾 Tabla de productos */}
+     {/* Products Table */}
 <div className="bg-white rounded-lg shadow-md overflow-hidden">
   <table className="w-full text-sm text-left">
     <thead className="bg-gray-200">
@@ -138,7 +142,7 @@ export default function DashboardPage() {
 </div>
 
 
-      {/* 🟢 Modal para crear/editar */}
+      {/* Modal for creating/editing products */}
       {isModalOpen && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-40">
           <div className="bg-white p-6 rounded-lg w-96 shadow-lg">

@@ -1,4 +1,4 @@
-// src/app/api/test/route.ts
+
 import dbConnection from "@/lib/dbConnect";
 import { NextResponse } from "next/server";
 

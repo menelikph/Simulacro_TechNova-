@@ -1,6 +1,5 @@
 import mongoose, { Schema, Document, Model } from "mongoose";
 
-// 1. Interface (para tipar los datos del producto)
 export interface IProduct extends Document {
   sku: string;
   name: string;
@@ -14,7 +13,6 @@ export interface IProduct extends Document {
 } 
 
 
-// 2. Esquema de Mongoose
 const ProductSchema: Schema = new Schema({
   sku: { type: String, required: true, unique: true },
   name: { type: String, required: true },
@@ -27,7 +25,6 @@ const ProductSchema: Schema = new Schema({
   createdAt: { type: Date, default: Date.now },
 });
 
-// 3. Modelo exportado (evita volver a crearlo si ya existe)
 const Product: Model<IProduct> =
   mongoose.models.Product || mongoose.model<IProduct>("Product", ProductSchema);
 

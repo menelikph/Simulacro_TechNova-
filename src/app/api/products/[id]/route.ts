@@ -2,15 +2,14 @@ import { NextResponse } from "next/server";
 import dbConnect from "@/lib/dbConnect";
 import Product from "@/models/Product";
 
-// PUT - Actualizar producto por ID
+
 export async function PUT(
   request: Request,
   //{ params }: { params: { id: string } }
-  context: { params: Promise<{ id: string }> } // 👈 se declara como Promise
+  context: { params: Promise<{ id: string }> } // declared how promise
 ) {
   try {
-    const { id } = await context.params; // 👈 se espera el resultado
-    await dbConnect();
+    const { id } = await context.params;
     const body = await request.json();
 
     const updatedProduct = await Product.findByIdAndUpdate(id, body, { new: true });
@@ -25,15 +24,14 @@ export async function PUT(
     return NextResponse.json({ message: "Error al actualizar producto" }, { status: 500 });
   }
 }
-
-// DELETE - Eliminar producto por ID
+// DELETE product ID
 export async function DELETE(
   request: Request,
   //{ params }: { params: { id: string } }
-  context: { params: Promise<{ id: string }> } // 👈 también aquí
+  context: { params: Promise<{ id: string }> } 
 ) {
   try {
-    const { id } = await context.params; // 👈 se espera antes de usar
+    const { id } = await context.params; 
     await dbConnect();
 
     const deletedProduct = await Product.findByIdAndDelete(id);

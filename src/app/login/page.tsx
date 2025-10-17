@@ -12,7 +12,7 @@ export default function LoginPage() {
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
 
-    // 👇 Usuarios simulados (por ahora)
+    // simule users
     const validUser = {
       username: "admin",
       password: "1234",
